@@ -16,7 +16,7 @@ class App extends Component {
       noEffect: []
     };
 
-    this.apiUrl = "http://pokeapi.co/api/v2/";
+    this.apiUrl = "https://pokeapi.co/api/v2/";
     this.pokemonUrl = this.apiUrl + "pokemon/";
     this.typeUrl = this.apiUrl + "type/";
     this.fetchMode = {mode: 'cors'};
