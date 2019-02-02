@@ -37,7 +37,6 @@ class App extends Component {
 
   getTypes() {
     var pokemon = this.state.value.replace(/'/g, "").replace(/\./g, "").replace(/ /g, "-").toLowerCase();
-    console.log(this.pokemonUrl + pokemon);
     fetch(this.pokemonUrl + pokemon, this.fetchMode)
       .then(res => res.json())
       .then(
