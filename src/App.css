@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
 }
 
 .App-logo {
@@ -31,6 +30,6 @@
   }
 }
 
-h1 {
+h1, h2 {
   text-transform: capitalize;
 }
