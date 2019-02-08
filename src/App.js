@@ -13,7 +13,8 @@ class App extends Component {
       relationships: [],
       superEffective: [],
       notVeryEffective: [],
-      noEffect: []
+      noEffect: [],
+      cache: {}
     };
 
     this.apiUrl = "https://pokeapi.co/api/v2/";
@@ -37,13 +38,30 @@ class App extends Component {
 
   getTypes() {
     var pokemon = this.state.value.replace(/'/g, "").replace(/\./g, "").replace(/ /g, "-").toLowerCase();
+
+    if (pokemon in this.state.cache) {
+      var pokemonData = this.state.cache[pokemon];
+      this.setState({
+        types: pokemonData.types,
+        relationships: pokemonData.relationships,
+        superEffective: pokemonData.superEffective,
+        notVeryEffective: pokemonData.notVeryEffective,
+        noEffect: pokemonData.noEffect
+      });
+      return;
+    }
+
     fetch(this.pokemonUrl + pokemon, this.fetchMode)
       .then(res => res.json())
       .then(
         (result) => {
           var types = result.types.map((x) => x.type.name);
-          this.setState({types});
-          this.getTypeRelations(types);
+          var cacheEntry = {};
+          cacheEntry[pokemon] = {
+            types: types
+          };
+          this.setState({types, cache: Object.assign(cacheEntry, this.state.cache)});
+          this.getTypeRelations(types, pokemon);
         },
         (error) => {
           console.log(error);
@@ -52,7 +70,7 @@ class App extends Component {
       );
   }
 
-  getTypeRelations(types) {
+  getTypeRelations(types, pokemon) {
     var relationships = {};
 
     for (var i = 0; i < types.length; i++) {
@@ -73,6 +91,13 @@ class App extends Component {
             var superEffective = Object.keys(relationships).filter((x) => relationships[x] > 1.0);
             var notVeryEffective = Object.keys(relationships).filter((x) => relationships[x] < 1.0 && relationships[x] > 0.0);
             var noEffect = Object.keys(relationships).filter((x) => relationships[x] === 0.0);
+
+            var cacheEntry = this.state.cache[pokemon];
+            cacheEntry.relationships = relationships;
+            cacheEntry.superEffective = superEffective;
+            cacheEntry.notVeryEffective = notVeryEffective;
+            cacheEntry.noEffect = noEffect;
+
             this.setState({superEffective, notVeryEffective, noEffect, relationships});
           },
           (error) => {
