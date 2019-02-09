@@ -38,6 +38,7 @@ class App extends Component {
 
   getTypes() {
     var pokemon = this.state.value.replace(/'/g, "").replace(/\./g, "").replace(/ /g, "-").toLowerCase();
+    this.setState({error: null, value: ""});
 
     if (pokemon in this.state.cache) {
       var pokemonData = this.state.cache[pokemon];
@@ -77,7 +78,7 @@ class App extends Component {
       var currType = types[i];
 
       if (currType in this.state.cache) {
-        var typeRelations = this.state.cache.currType;
+        var typeRelations = this.state.cache[currType];
         relationships = this.calculateRelations(relationships, typeRelations.halfDmg, 0.5, currType);
         relationships = this.calculateRelations(relationships, typeRelations.dblDmg, 2.0, currType);
         relationships = this.calculateRelations(relationships, typeRelations.noDmg, 0.0, currType);
@@ -93,8 +94,6 @@ class App extends Component {
           (result) => {
             var cache = this.state.cache;
             cache[currType] = {};
-
-            this.setState({error: null});
 
             var halfDmg = result.damage_relations.half_damage_from.map((x) => x.name);
             cache[currType].halfDmg = halfDmg;
