@@ -10,7 +10,7 @@ class App extends Component {
       error: null,
       submitted: '',
       types: [],
-      relationships: [],
+      relationships: {},
       superEffective: [],
       notVeryEffective: [],
       noEffect: [],
@@ -146,14 +146,25 @@ class App extends Component {
   }
 
   render() {
-    const name = this.state.submitted;
-    const types = this.state.types;
-    const type = types.length > 0 ? types[0] : "normal";
-    const relationships = this.state.relationships;
-    const superEffective = this.state.superEffective;
-    const notVeryEffective = this.state.notVeryEffective;
-    const noEffect = this.state.noEffect;
     const isError = this.state.error !== null;
+
+    let name = "";
+    let type = "";
+    let types = [];
+    let superEffective = [];
+    let notVeryEffective = [];
+    let noEffect = [];
+    let relationships = {};
+
+    if (!isError) {
+      name = this.state.submitted;
+      types = this.state.types;
+      type = types.length > 0 ? types[0] : "normal";
+      relationships = this.state.relationships;
+      superEffective = this.state.superEffective;
+      notVeryEffective = this.state.notVeryEffective;
+      noEffect = this.state.noEffect;
+    }
 
     let body;
 
