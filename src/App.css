@@ -21,17 +21,80 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 h1, h2, h3 {
   text-transform: capitalize;
+}
+
+.normal {
+  color: #aa9;
+}
+
+.flying {
+  color: #89f;
+}
+
+.bug {
+  color: #ab2;
+}
+
+.grass {
+  color: #7c5;
+}
+
+.fire {
+  color: #f42;
+}
+
+.water {
+  color: #39f;
+}
+
+.ice {
+  color: #6cf;
+}
+
+.electric {
+  color: #fc3;
+}
+
+.psychic {
+  color: #f59;
+}
+
+.ghost {
+  color: #66b;
+}
+
+.poison {
+  color: #a59;
+}
+
+.fighting {
+  color: #b54;
+}
+
+.rock {
+  color: #ba6;
+}
+
+.ground {
+  color: #db5;
+}
+
+.dark {
+  color: #754;
+}
+
+.steel {
+  color: #aab;
+}
+
+.fairy {
+  color: #e9e;
+}
+
+.dragon {
+  color: #76e;
 }
 
 .error {

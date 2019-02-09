@@ -148,6 +148,7 @@ class App extends Component {
   render() {
     const name = this.state.submitted;
     const types = this.state.types;
+    const type = types.length > 0 ? types[0] : "normal";
     const relationships = this.state.relationships;
     const superEffective = this.state.superEffective;
     const notVeryEffective = this.state.notVeryEffective;
@@ -196,7 +197,7 @@ class App extends Component {
         }
 
         <div>
-          <h2>{name}</h2>
+          <h2 className={type}>{name}</h2>
           <ul>
             {types.map(function(type, index){
               return <li key={ index }>{type}</li>;
