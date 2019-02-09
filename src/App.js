@@ -94,6 +94,8 @@ class App extends Component {
             var cache = this.state.cache;
             cache[currType] = {};
 
+            this.setState({error: null});
+
             var halfDmg = result.damage_relations.half_damage_from.map((x) => x.name);
             cache[currType].halfDmg = halfDmg;
             relationships = this.calculateRelations(relationships, halfDmg, 0.5, currType);
@@ -151,25 +153,26 @@ class App extends Component {
     const superEffective = this.state.superEffective;
     const notVeryEffective = this.state.notVeryEffective;
     const noEffect = this.state.noEffect;
+    const isError = this.state.error !== null;
 
     let body;
 
     if (Object.keys(relationships).length > 0) {
       body = (
         <div>
-          <h3>Super Effective</h3>
+          <h3>Super Effective Against {name}</h3>
           <ul>
             {superEffective.map(function(type, index){
               return <li key={ index }>{type}</li>;
             })}
           </ul>
-          <h3>Not Very Effective</h3>
+          <h3>Not Very Effective Against {name}</h3>
           <ul>
             {notVeryEffective.map(function(type, index){
               return <li key={ index }>{type}</li>;
             })}
           </ul>
-          <h3>No Effect</h3>
+          <h3>No Effect Against {name}</h3>
           <ul>
             {noEffect.map(function(type, index){
               return <li key={ index }>{type}</li>;
@@ -188,6 +191,10 @@ class App extends Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
+
+        {isError &&
+          <p className="error">Oops! Something went wrong.</p>
+        }
 
         <div>
           <h2>{name}</h2>
