@@ -21,7 +21,7 @@
   color: #61dafb;
 }
 
-h1, h2, h3 {
+h1, h2, h3, ul {
   text-transform: capitalize;
 }
 
