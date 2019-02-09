@@ -56,7 +56,7 @@ class App extends Component {
       .then(res => res.json())
       .then(
         (result) => {
-          var types = result.types.map((x) => x.type.name);
+          var types = result.types.map((x) => x.type.name).reverse();
           var cacheEntry = {};
           cacheEntry[pokemon] = {
             types: types
