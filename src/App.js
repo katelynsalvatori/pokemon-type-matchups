@@ -75,30 +75,38 @@ class App extends Component {
 
     for (var i = 0; i < types.length; i++) {
       var currType = types[i];
+
+      if (currType in this.state.cache) {
+        var typeRelations = this.state.cache.currType;
+        relationships = this.calculateRelations(relationships, typeRelations.halfDmg, 0.5, currType);
+        relationships = this.calculateRelations(relationships, typeRelations.dblDmg, 2.0, currType);
+        relationships = this.calculateRelations(relationships, typeRelations.noDmg, 0.0, currType);
+
+        this.setRelationships(relationships, pokemon);
+        continue;
+      }
+
       fetch(this.typeUrl + currType, this.fetchMode)
         .then(res => res.json())
         .then(
+          // eslint-disable-next-line
           (result) => {
+            var cache = this.state.cache;
+            cache[currType] = {};
+
             var halfDmg = result.damage_relations.half_damage_from.map((x) => x.name);
+            cache[currType].halfDmg = halfDmg;
             relationships = this.calculateRelations(relationships, halfDmg, 0.5, currType);
 
             var dblDmg = result.damage_relations.double_damage_from.map((x) => x.name);
+            cache[currType].dblDmg = dblDmg;
             relationships = this.calculateRelations(relationships, dblDmg, 2.0, currType);
 
             var noDmg = result.damage_relations.no_damage_from.map((x) => x.name);
+            cache[currType].noDmg = noDmg;
             relationships = this.calculateRelations(relationships, noDmg, 0.0, currType);
 
-            var superEffective = Object.keys(relationships).filter((x) => relationships[x] > 1.0);
-            var notVeryEffective = Object.keys(relationships).filter((x) => relationships[x] < 1.0 && relationships[x] > 0.0);
-            var noEffect = Object.keys(relationships).filter((x) => relationships[x] === 0.0);
-
-            var cacheEntry = this.state.cache[pokemon];
-            cacheEntry.relationships = relationships;
-            cacheEntry.superEffective = superEffective;
-            cacheEntry.notVeryEffective = notVeryEffective;
-            cacheEntry.noEffect = noEffect;
-
-            this.setState({superEffective, notVeryEffective, noEffect, relationships});
+            this.setRelationships(relationships, pokemon);
           },
           (error) => {
             console.log(error);
@@ -106,6 +114,20 @@ class App extends Component {
           }
         );
     }
+  }
+
+  setRelationships(relationships, pokemon) {
+    var superEffective = Object.keys(relationships).filter((x) => relationships[x] > 1.0);
+    var notVeryEffective = Object.keys(relationships).filter((x) => relationships[x] < 1.0 && relationships[x] > 0.0);
+    var noEffect = Object.keys(relationships).filter((x) => relationships[x] === 0.0);
+
+    var cacheEntry = this.state.cache[pokemon];
+    cacheEntry.relationships = relationships;
+    cacheEntry.superEffective = superEffective;
+    cacheEntry.notVeryEffective = notVeryEffective;
+    cacheEntry.noEffect = noEffect;
+
+    this.setState({superEffective, notVeryEffective, noEffect, relationships});
   }
 
   calculateRelations(relationships, damageFromTypes, multiplier) {
