@@ -1,3 +1,13 @@
+# Pokémon Type Relations React App
+
+https://katelynsalvatori-pokemon-types.herokuapp.com/
+
+This project is a one-page React app that lets you enter the name of a Pokémon you are battling against and see what types are super effective against it, not very effective against it, and have no effect against it.
+
+Data is pulled from PokéAPI: https://pokeapi.co/
+
+Below is some auto-generated information about how this project was made.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
