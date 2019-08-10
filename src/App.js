@@ -1,9 +1,26 @@
 import React, { Component } from 'react';
 import './App.css';
+import PokemonList, { type PokemonType } from './PokemonList';
 
-class App extends Component {
+type Props = {|
 
-  constructor(props) {
+|};
+
+type State = {
+  value: string,
+  error?: string,
+  submitted: string,
+  types: Array<PokemonType>,
+  relationships: Object,
+  superEffective: Array<PokemonType>,
+  notVeryEffective: Array<PokemonType>,
+  noEffect: Array<PokemonType>,
+  cache: Object,
+};
+
+class App extends Component<Props, State> {
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       value: '',
@@ -14,7 +31,7 @@ class App extends Component {
       superEffective: [],
       notVeryEffective: [],
       noEffect: [],
-      cache: {}
+      cache: {},
     };
 
     this.apiUrl = "https://pokeapi.co/api/v2/";
@@ -171,25 +188,22 @@ class App extends Component {
     if (Object.keys(relationships).length > 0) {
       body = (
         <div>
-          <h3>Super Effective Against {name}</h3>
-          <ul>
-            {superEffective.map(function(type, index){
-              return <li key={ index }>{type}</li>;
-            })}
-          </ul>
-          <h3>Not Very Effective Against {name}</h3>
-          <ul>
-            {notVeryEffective.map(function(type, index){
-              return <li key={ index }>{type}</li>;
-            })}
-          </ul>
-          <h3>No Effect Against {name}</h3>
-          <ul>
-            {noEffect.map(function(type, index){
-              return <li key={ index }>{type}</li>;
-            })}
-          </ul>
-          </div>
+          <PokemonList
+            header="Super Effective"
+            name={name}
+            typeList={superEffective}
+          />
+          <PokemonList
+            header="Not Very Effective"
+            name={name}
+            typeList={notVeryEffective}
+          />
+          <PokemonList
+            header="No Effect"
+            name={name}
+            typeList={noEffect}
+          />
+        </div>
       );
     }
 
